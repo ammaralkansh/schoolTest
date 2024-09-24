@@ -41,10 +41,23 @@ class UserCrudController extends CrudController
     {
         CRUD::setFromDb(); // set columns from db columns.
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        $this->crud->addColumn([
+            'name' => 'name',
+            'label' => 'اسم المستخدم',
+            'type' => 'text',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'email',
+            'label' => 'البريد الإلكتروني',
+            'type' => 'email',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'created_at',
+            'label' => 'تاريخ الإنشاء',
+            'type' => 'date',
+        ]);
     }
 
     /**
@@ -56,12 +69,24 @@ class UserCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(UserRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        
+        $this->crud->addField([
+            'name' => 'name',
+            'label' => 'اسم المستخدم',
+            'type' => 'text',
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->crud->addField([
+            'name' => 'email',
+            'label' => 'البريد الإلكتروني',
+            'type' => 'email',
+        ]);
+
+        $this->crud->addField([
+            'name' => 'password',
+            'label' => 'كلمة المرور',
+            'type' => 'password',
+        ]);
     }
 
     /**
@@ -72,6 +97,6 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->setupCreateOperation(); // استخدم إعدادات إنشاء المستخدم
     }
 }

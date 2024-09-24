@@ -25,7 +25,9 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $this->user,
+            'password' => 'required|string|min:8|confirmed',
         ];
     }
 
