@@ -1,16 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StudentsRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class StudentsCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
 class StudentsCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -18,70 +12,52 @@ class StudentsCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    public function store()
-    {
-        // التحقق من البيانات المدخلة
-        $this->crud->validateRequest();
 
-        // حفظ البيانات المدخلة
-        $this->crud->addEntry(); // استخدام هذه الدالة لحفظ البيانات
-
-        // إعادة توجيه المستخدم بعد الحفظ
-        return redirect()->route('students.index'); // تأكد من وجود هذا المسار في ملف routes/web.php
-    }
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
-     */
     public function setup()
     {
         CRUD::setModel(\App\Models\Students::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/students');
-        CRUD::setEntityNameStrings('students', 'students');
+        CRUD::setEntityNameStrings('student', 'students');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+    
+        CRUD::setFromDb(); // استخدام الأعمدة من قاعدة البيانات.
+       // $this->setupCustomButtons();
+    }
+    
+    protected function setupCustomButtons()
+    {
+        // إضافة الرسم البياني بعد جدول القائمة
+        $this->crud->addButtonFromView('top', 'students_chart', 'students_chart', 'end');
+    }
+    
+    
+    public function getChartData()
+    {
+        // استعلام لجلب عدد الطلاب حسب الصف
+        $data = \App\Models\Students::selectRaw('COUNT(*) as count, classroom_id')
+            ->groupBy('classroom_id')
+            ->get();
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        // تحويل البيانات إلى تنسيق JSON
+        return response()->json($data);
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(StudentsRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function chart()
+    {
+        return view('admin.students.chart'); // تأكد من إنشاء هذا العرض
     }
 }

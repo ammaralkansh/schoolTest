@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+Route::get('students/chart', function () {
+    return view('vendor.backpack.crud.students.chart');
+})->name('students.chart');
 
 // --------------------------
 // Custom Backpack Routes
@@ -18,11 +21,12 @@ Route::group([
 ], function () { // custom admin routes
     Route::crud('user', 'UserCrudController');
     Route::crud('subject', 'SubjectCrudController');
-    Route::crud('grade', 'GradeCrudController');
+
     Route::crud('coursefee', 'CoursefeeCrudController');
     Route::crud('teacher', 'TeacherCrudController');
     Route::crud('students', 'StudentsCrudController');
     Route::crud('classroom', 'ClassroomCrudController');
+
 }); // this should be the absolute last line of this file
 
 /**
