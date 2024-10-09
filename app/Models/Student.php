@@ -9,10 +9,21 @@ class Student extends Model
 {
     use HasFactory;
 
-    // Specify the table if it's not the plural form of the model name
-    protected $table = 'students'; // Optional, only if your table name does not follow Laravel's naming convention
+    protected $table = 'students'; // Table name if not using Laravel conventions
 
-    // Define any relationships or other methods as needed
+    // Define relationships
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
- 
-
