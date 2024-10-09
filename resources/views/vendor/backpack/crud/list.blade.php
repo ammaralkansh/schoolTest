@@ -12,7 +12,7 @@
 @endphp
 
 @section('header')
-    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-baseline d-print-none" bp-section="page-header">
+    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-baseline d-print-none" bp-section="page-header" style="direction: rtl;">
         <h1 class="text-capitalize mb-0" bp-section="page-heading">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h1>
         <p class="ms-2 ml-2 mb-0" id="datatable_info_stack" bp-section="page-subheading">{!! $crud->getSubheading() ?? '' !!}</p>
     </section>
@@ -80,15 +80,6 @@
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     data-column-name="{{ $column['name'] }}"
-                    {{--
-                    data-visible-in-table => if developer forced column to be in the table with 'visibleInTable => true'
-                    data-visible => regular visibility of the column
-                    data-can-be-visible-in-table => prevents the column to be visible into the table (export-only)
-                    data-visible-in-modal => if column appears on responsive modal
-                    data-visible-in-export => if this column is exportable
-                    data-force-export => force export even if columns are hidden
-                    --}}
-
                     data-visible="{{ $exportOnlyColumn ? 'false' : var_export($visibleInTable) }}"
                     data-visible-in-table="{{ var_export($visibleInTable) }}"
                     data-can-be-visible-in-table="{{ $exportOnlyColumn ? 'false' : 'true' }}"
@@ -154,6 +145,22 @@
   @basset('https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css')
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
   @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
+
+  <style>
+      /* تغيير اتجاه القائمة إلى اليمين */
+      .header-operation {
+          direction: rtl; /* تعيين الاتجاه إلى اليمين */
+      }
+      
+      .table {
+          direction: rtl; /* تعيين اتجاه الجدول إلى اليمين */
+      }
+
+      /* محاذاة النص إلى اليمين */
+      .text-capitalize, #datatable_info_stack {
+          text-align: right;
+      }
+  </style>
 
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')

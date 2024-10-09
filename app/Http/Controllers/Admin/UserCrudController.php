@@ -41,23 +41,6 @@ class UserCrudController extends CrudController
     {
         CRUD::setFromDb(); // set columns from db columns.
 
-        $this->crud->addColumn([
-            'name' => 'name',
-            'label' => 'اسم المستخدم',
-            'type' => 'text',
-        ]);
-
-        $this->crud->addColumn([
-            'name' => 'email',
-            'label' => 'البريد الإلكتروني',
-            'type' => 'email',
-        ]);
-
-        $this->crud->addColumn([
-            'name' => 'created_at',
-            'label' => 'تاريخ الإنشاء',
-            'type' => 'date',
-        ]);
     }
 
     /**
@@ -87,6 +70,8 @@ class UserCrudController extends CrudController
             'label' => 'كلمة المرور',
             'type' => 'password',
         ]);
+
+      
     }
 
     /**

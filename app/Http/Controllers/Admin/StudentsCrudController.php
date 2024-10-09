@@ -22,10 +22,28 @@ class StudentsCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        CRUD::setFromDb(); // Use columns from the database.
     
-        CRUD::setFromDb(); // استخدام الأعمدة من قاعدة البيانات.
-       // $this->setupCustomButtons();
+        // Add custom columns to list
+        $this->crud->addColumn([
+            'name' => 'age',
+            'type' => 'number',
+            'label' => 'Age',
+        ]);
+    
+        $this->crud->addColumn([
+            'name' => 'country',
+            'type' => 'text',
+            'label' => 'Country',
+        ]);
+    
+        $this->crud->addColumn([
+            'name' => 'status',
+            'type' => 'enum',
+            'label' => 'Status',
+        ]);
     }
+    
     
     protected function setupCustomButtons()
     {
@@ -46,18 +64,26 @@ class StudentsCrudController extends CrudController
     }
 
     protected function setupCreateOperation()
-    {
-        CRUD::setValidation(StudentsRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-    }
+{
+    CRUD::setValidation(StudentsRequest::class);
+    
+    CRUD::field('name');
+    CRUD::field('age');
+    CRUD::field('country');
+    CRUD::field('phone');
+    CRUD::field('status');
+    CRUD::field('email');
+    CRUD::field('date_of_birth');
+    CRUD::field('classroom_id');
+}
 
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
-    }
+protected function setupUpdateOperation()
+{
+    $this->setupCreateOperation();
+}
 
-    public function chart()
-    {
-        return view('admin.students.chart'); // تأكد من إنشاء هذا العرض
-    }
+public function chart()
+{
+    return view('admin.students.chart'); // تأكد من إنشاء هذا العرض
+}
 }

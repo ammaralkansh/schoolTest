@@ -26,11 +26,16 @@ class StudentsRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'age' => 'required|integer|min:1',
+            'country' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'status' => 'required|in:active,prospective,inactive,withdrawn',
             'email' => 'required|email|unique:students,email',
             'date_of_birth' => 'required|date',
             'classroom_id' => 'required|exists:classrooms,id',
         ];
     }
+    
 
     /**
      * Get the validation attributes that apply to the request.
