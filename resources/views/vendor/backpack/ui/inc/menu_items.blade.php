@@ -34,7 +34,6 @@
     <li><a href="{{ backpack_url('teacher') }}">المعلمين</a></li>
     <li><a href="{{ backpack_url('students') }}">الطلاب</a></li>
     <li><a href="{{ backpack_url('subject') }}">المواد الدراسية</a></li>
-    <li><a href="{{ backpack_url('coursefee') }}">كلفة الكورس الواحد</a></li>
     <li><a href="{{ backpack_url('classroom') }}">الصفوف الدراسية</a></li>
     <li><a href="{{ backpack_url('analytics') }}">Analytics</a></li>
 </ul>

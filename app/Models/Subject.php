@@ -19,7 +19,7 @@ class Subject extends Model
 
     protected $table = 'subjects';
     // تحديد الحقول القابلة للكتابة
-    protected $fillable = ['name']; // يجب إضافة 'name' هنا ليتم التعامل معه بشكل صحيح
+    protected $fillable = ['name','course_price','course_hours']; // يجب إضافة 'name' هنا ليتم التعامل معه بشكل صحيح
 
     // حماية الحقول الحساسة التي لا يجب تعديلها
     protected $guarded = ['id'];

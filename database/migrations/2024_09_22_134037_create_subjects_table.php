@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->decimal('course_price', 8, 2)->nullable(); // عمود سعر الكورس
+            $table->integer('course_hours')->nullable(); // عمود عدد الساعات
             $table->timestamps();
         });
         

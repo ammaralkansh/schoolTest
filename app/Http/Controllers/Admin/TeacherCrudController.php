@@ -29,6 +29,39 @@ class TeacherCrudController extends CrudController
         CRUD::setModel(\App\Models\Teacher::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/teacher');
         CRUD::setEntityNameStrings('teacher', 'teachers');
+        CRUD::setValidation(TeacherRequest::class);
+        CRUD::setFromDb(); // set fields from db columns.
+        $this->crud->addField([
+            'name' => 'specialization',
+            'label' => 'التخصص',
+            'type' => 'text',
+        ]);
+        
+        $this->crud->addField([
+            'name' => 'available_from',
+            'label' => 'الوقت المتاح من',
+            'type' => 'time',
+        ]);
+        
+        $this->crud->addField([
+            'name' => 'available_to',
+            'label' => 'الوقت المتاح إلى',
+            'type' => 'time',
+        ]);
+        
+        $this->crud->addField([
+            'name' => 'rate',
+            'label' => 'سعر المدرس',
+            'type' => 'number',
+            'attributes' => ["step" => "0.01"],
+        ]);
+        
+        $this->crud->addField([
+            'name' => 'notes',
+            'label' => 'ملاحظات',
+            'type' => 'textarea',
+        ]);
+        
     }
 
     /**
@@ -39,37 +72,16 @@ class TeacherCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+       
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(TeacherRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
+
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

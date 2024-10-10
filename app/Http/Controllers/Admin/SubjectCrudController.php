@@ -64,6 +64,9 @@ class SubjectCrudController extends CrudController
             'label' => 'تاريخ التحديث',
             'type' => 'datetime',
         ]);
+
+        CRUD::column('course_price')->label('Course Price')->type('number');; // سعر الكورس
+        CRUD::column('course_hours')->label('Course Hours')->type('number');;
     }
 
     /**
@@ -82,6 +85,8 @@ class SubjectCrudController extends CrudController
             'label' => 'اسم المادة الدراسية',
             'type' => 'text',
         ]);
+
+
     }
 
     /**
@@ -101,6 +106,8 @@ class SubjectCrudController extends CrudController
             'label' => 'اسم المادة الدراسية',
             'type' => 'text',
         ]);
+        CRUD::field('course_price')->label('Course Price')->type('number'); // سعر الكورس
+        CRUD::field('course_hours')->label('Course Hours')->type('number'); // عدد الساعات
     }
 
     /**
