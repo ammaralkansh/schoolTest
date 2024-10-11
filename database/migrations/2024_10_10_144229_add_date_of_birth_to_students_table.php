@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('students', function (Blueprint $table) {
-            $table->date('date_of_birth')->nullable(); // إضافة حقل تاريخ الميلاد
-        });
+        // تحقق مما إذا كان العمود موجودًا بالفعل
+        if (!Schema::hasColumn('students', 'date_of_birth')) {
+            Schema::table('students', function (Blueprint $table) {
+                $table->date('date_of_birth')->nullable(); // إضافة حقل تاريخ الميلاد
+            });
+        }
     }
 
     /**

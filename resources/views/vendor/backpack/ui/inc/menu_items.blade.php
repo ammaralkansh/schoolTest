@@ -35,5 +35,13 @@
     <li><a href="{{ backpack_url('students') }}">الطلاب</a></li>
     <li><a href="{{ backpack_url('subject') }}">المواد الدراسية</a></li>
     <li><a href="{{ backpack_url('classroom') }}">الصفوف الدراسية</a></li>
-    <li><a href="{{ backpack_url('analytics') }}">Analytics</a></li>
+    <li><a href="{{ backpack_url('course') }}">الدورات</a></li>
+    <li><a href="{{ backpack_url('library') }}">ادارة المكتبات</a></li>
+    <li><a href="{{ backpack_url('book') }}">الكتب</a></li>
+
+
+
 </ul>
+
+
+
