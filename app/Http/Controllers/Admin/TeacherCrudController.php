@@ -29,8 +29,49 @@ class TeacherCrudController extends CrudController
         CRUD::setModel(\App\Models\Teacher::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/teacher');
         CRUD::setEntityNameStrings('teacher', 'teachers');
+        
+    }
+
+    /**
+     * Define what happens when the List operation is loaded.
+     * 
+     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
+     * @return void
+     */
+    protected function setupListOperation()
+    {
+        CRUD::setValidation(TeacherRequest::class);
+        CRUD::setFromDb();
+
+        // إزالة العمود التلقائي للصورة
+        CRUD::removeColumn('image');
+    
+        // إضافة العمود المخصص للصورة كمعاينة مصغرة
+        CRUD::addColumn([
+            'name' => 'image',
+            'label' => 'صورة المعلم',
+            'type' => 'image',
+            'prefix' => 'storage/',
+            'height' => '50px',
+            'width' => '50px',
+        ]);
+
+    }
+
+    protected function setupCreateOperation()
+    {
         CRUD::setValidation(TeacherRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
+        $this->crud->addField([
+            'name' => 'image',
+            'label' => 'صورة المعلم',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public', // تأكد من استخدام قرص 'public' لحفظ الملفات
+            'prefix' => 'uploads/images/teachers/', // مسار تخزين الصور
+        ]);
+        
+        
         $this->crud->addField([
             'name' => 'specialization',
             'label' => 'التخصص',
@@ -51,9 +92,20 @@ class TeacherCrudController extends CrudController
         
         $this->crud->addField([
             'name' => 'rate',
-            'label' => 'سعر المدرس',
+            'label' => 'راتب المدرس',
             'type' => 'number',
             'attributes' => ["step" => "0.01"],
+        ]);
+        $this->crud->addField([
+            'name' => 'subject_id',
+            'label' => 'المادة الدراسية',
+            'type' => 'select',
+            'entity' => 'subject',
+            'model' => 'App\Models\Subject', // مسار النموذج المرتبط بالمادة
+            'attribute' => 'name', // عرض اسم المادة في القائمة المنسدلة
+            'options' => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }), // ترتيب الخيارات تصاعديًا حسب الاسم
         ]);
         
         $this->crud->addField([
@@ -62,22 +114,6 @@ class TeacherCrudController extends CrudController
             'type' => 'textarea',
         ]);
         
-    }
-
-    /**
-     * Define what happens when the List operation is loaded.
-     * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
-    protected function setupListOperation()
-    {
-       
-    }
-
-    protected function setupCreateOperation()
-    {
-
         
     }
 
