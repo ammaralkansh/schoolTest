@@ -10,6 +10,19 @@ class Teacher extends Model
 {
     use CrudTrait;
     use HasFactory;
-    protected $fillable = ['name', 'email'];
+    protected $fillable = ['name', 'email','specialization','available_from','available_to','rate','notes','subject_id','image'];
+    public function subject()
+{
+    return $this->belongsTo(Subject::class);
+}
+public function setImageAttribute($value)
+{
+    $attribute_name = "image";
+    $disk = "public";
+    $destination_path = "uploads/images/teachers";
+
+    $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+}
+
 
 }

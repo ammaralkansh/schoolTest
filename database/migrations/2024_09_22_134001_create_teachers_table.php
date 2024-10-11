@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('specialization')->nullable(); // حقل التخصص
+            $table->time('available_from')->nullable(); // الوقت المتاح من
+            $table->time('available_to')->nullable(); // الوقت المتاح إلى
+            $table->decimal('rate', 8, 2)->nullable(); // سعر المدرس
+            $table->text('notes')->nullable();
+            $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('set null');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
         
