@@ -2,23 +2,24 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait; // تأكد من استيراد CrudTrait
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    use HasFactory, CrudTrait; // تأكد من استخدام CrudTrait هنا
+    use CrudTrait;
+    use HasFactory;
 
     protected $fillable = [
-        'title',       // عنوان الكتاب
-        'price',       // سعر الكتاب
-        'pages',       // عدد الصفحات
-        'status',      // حالة الكتاب (موجود أو مستعار)
-        'library_id',  // معرف المكتبة (لربط الكتاب بالمكتبة)
+        'title',
+        'price',
+        'pages',
+        'status',
+        'library_id', // Ensure this is in fillable if you plan to set it
     ];
 
-    // علاقة الكتاب بالمكتبة
+    // Define the relationship with the Library model
     public function library()
     {
         return $this->belongsTo(Library::class);

@@ -28,7 +28,7 @@ class TeacherCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Teacher::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/teacher');
-        CRUD::setEntityNameStrings('teacher', 'teachers');
+        CRUD::setEntityNameStrings('معلم', 'المعلمين');
         
     }
 

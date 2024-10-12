@@ -18,7 +18,7 @@ class StudentsCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Student::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/students');
-        CRUD::setEntityNameStrings('student', 'students');
+        CRUD::setEntityNameStrings('طالب', 'الطلاب');
     }
 
     protected function setupListOperation()

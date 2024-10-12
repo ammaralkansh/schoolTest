@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\TagRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class UserCrudController
+ * Class TagCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class UserCrudController extends CrudController
+class TagCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\User::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        CRUD::setEntityNameStrings('مستخدم', 'المستخدمين');
+        CRUD::setModel(\App\Models\Tag::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/tag');
+        CRUD::setEntityNameStrings('tag', 'tags');
     }
 
     /**
@@ -41,6 +41,10 @@ class UserCrudController extends CrudController
     {
         CRUD::setFromDb(); // set columns from db columns.
 
+        /**
+         * Columns can be defined using the fluent syntax:
+         * - CRUD::column('price')->type('number');
+         */
     }
 
     /**
@@ -51,27 +55,13 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
-        
-        $this->crud->addField([
-            'name' => 'name',
-            'label' => 'اسم المستخدم',
-            'type' => 'text',
-        ]);
+        CRUD::setValidation(TagRequest::class);
+        CRUD::setFromDb(); // set fields from db columns.
 
-        $this->crud->addField([
-            'name' => 'email',
-            'label' => 'البريد الإلكتروني',
-            'type' => 'email',
-        ]);
-
-        $this->crud->addField([
-            'name' => 'password',
-            'label' => 'كلمة المرور',
-            'type' => 'password',
-        ]);
-
-      
+        /**
+         * Fields can be defined using the fluent syntax:
+         * - CRUD::field('price')->type('number');
+         */
     }
 
     /**
@@ -82,6 +72,6 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation(); // استخدم إعدادات إنشاء المستخدم
+        $this->setupCreateOperation();
     }
 }

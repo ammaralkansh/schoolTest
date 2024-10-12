@@ -18,6 +18,7 @@ class CreateLibrariesTable extends Migration
             $table->string('name'); // اسم المكتبة
             $table->text('description')->nullable(); // وصف المكتبة (اختياري)
             $table->string('location')->nullable(); // موقع المكتبة (اختياري)
+            $table->enum('status', ['open', 'closed'])->default('open'); // حالة المكتبة
             $table->timestamps(); // حقول timestamps (created_at و updated_at)
         });
     }

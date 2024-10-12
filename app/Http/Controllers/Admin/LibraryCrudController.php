@@ -28,7 +28,7 @@ class LibraryCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Library::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/library');
-        CRUD::setEntityNameStrings('library', 'libraries');
+        CRUD::setEntityNameStrings('مكتبة', 'المكتبات');
     }
 
     /**
@@ -44,7 +44,6 @@ class LibraryCrudController extends CrudController
         CRUD::column('location')->label('موقع المكتبة');
         CRUD::column('created_at')->label('تاريخ الإضافة');
     }
-    
 
     /**
      * Define what happens when the Create operation is loaded.
@@ -53,22 +52,19 @@ class LibraryCrudController extends CrudController
      * @return void
      */
     protected function setupCreateOperation()
-{
-    CRUD::setValidation(BookRequest::class);
+    {
+        CRUD::setValidation(LibraryRequest::class);
 
-    CRUD::field('title')->label('اسم الكتاب');
-    CRUD::field('price')->label('سعر الكتاب')->type('number')->attributes(['step' => '0.01']);
-    CRUD::field('pages')->label('عدد الصفحات')->type('number');
-    CRUD::field('status')->label('حالة الكتاب')->type('select_from_array')->options([
-        'available' => 'متاح',
-        'borrowed' => 'مستعار',
-    ]);
-    
-    // إضافة قائمة منسدلة لاختيار المكتبة
-    CRUD::field('library_id')->label('المكتبة')->type('select')->entity('library')->model('App\Models\Library')->attribute('name');
-}
-
-
+        CRUD::field('name')->label('اسم المكتبة');
+        CRUD::field('location')->label('موقع المكتبة');
+        CRUD::field('status')->label('حالة المكتبة')->type('select_from_array')->options([
+            'open' => 'مفتوحة',
+            'closed' => 'مغلقة',
+        ]);
+        
+        // إضافة قائمة منسدلة لاختيار الكتب المتاحة في المكتبة
+     //   CRUD::field('books')->label('الكتب المتاحة')->type('select2_multiple')->entity('books')->model(\App\Models\Book::class)->attribute('title');
+    }
 
     /**
      * Define what happens when the Update operation is loaded.

@@ -31,7 +31,7 @@ class SubjectCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Subject::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/subject');
-        CRUD::setEntityNameStrings('subject', 'subjects');
+        CRUD::setEntityNameStrings('مادة', 'المواد');
     }
 
     /**

@@ -30,7 +30,7 @@ class BookCrudController extends CrudController
     {
         $this->crud->setModel(Book::class); // تأكد من استخدام Book::class
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/book');
-        $this->crud->setEntityNameStrings('book', 'books');
+        $this->crud->setEntityNameStrings('كتاب', 'الكتب');
 
         // إعداد الحقول
         $this->crud->addField([

@@ -8,13 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Library extends Model
 {
-    use CrudTrait;
-    use HasFactory;
+    use CrudTrait, HasFactory;
 
-    // تحديد الحقول التي يمكن تعيينها جماعياً
     protected $fillable = [
         'name',
-        'description',
         'location',
+        'status',
     ];
+
+    // تعريف العلاقة مع نموذج الكتب (Book)
+    public function books()
+    {
+        return $this->belongsToMany(\App\Models\Book::class);
+    }
 }

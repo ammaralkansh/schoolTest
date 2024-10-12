@@ -28,6 +28,7 @@ Route::group([
     Route::crud('course', 'CourseCrudController');
     Route::crud('library', 'LibraryCrudController');
     Route::crud('book', 'BookCrudController');
+    Route::crud('tag', 'TagCrudController');
 }); // this should be the absolute last line of this file
 
 /**
