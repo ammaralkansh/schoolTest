@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CourseRequest extends FormRequest
+class OrganizerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,26 +23,11 @@ class CourseRequest extends FormRequest
      * @return array
      */
     public function rules()
-{
-    return [
-        'name' => 'required|min:5|max:255',
-        'subject_id' => 'required|exists:subjects,id',
-        'teacher_id' => 'required|exists:teachers,id',
-        'organizer_id' => 'required|exists:staff,id',
-        'level' => 'required',
-        'stage' => 'required',
-        'duration' => 'required|integer|min:1',
-        'min_students' => 'required|integer|min:1',
-        'max_students' => 'required|integer|min:1|gte:min_students',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after_or_equal:start_date',
-        'course_type' => 'required',
-        'number_of_lessons' => 'required|integer|min:1',
-        'status' => 'required',
-        'whatsapp_group' => 'boolean',
-    ];
-}
-
+    {
+        return [
+            // 'name' => 'required|min:5|max:255'
+        ];
+    }
 
     /**
      * Get the validation attributes that apply to the request.

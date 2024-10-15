@@ -1,6 +1,4 @@
 @php
-    // استخدم هذا الجزء فقط إذا كنت تريد التأكد من تحميل CSS مع الصفحة.
-    // يمكنك أيضاً استخدام ملف CSS خارجي.
 @endphp
 
 <style>
@@ -55,4 +53,5 @@
     <li><a href="{{ backpack_url('book') }}">الكتب</a></li>
 </ul>
 
-<x-backpack::menu-item title="Tags" icon="la la-question" :link="backpack_url('tag')" />
+
+<x-backpack::menu-item title="Organizers" icon="la la-question" :link="backpack_url('organizer')" />
