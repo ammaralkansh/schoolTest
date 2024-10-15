@@ -1,33 +1,8 @@
 @extends(backpack_view('blank'))
 
-
 @section('content')
   <div class="row">
     <div class="col-12">
-      {{-- نموذج البحث المتقدم --}}
-      <form method="GET" action="{{ url()->current() }}" class="form-inline mb-3">
-          <input type="text" name="specialization" placeholder="التخصص" class="form-control mr-2" value="{{ request('specialization') }}">
-          <select name="day" class="form-control mr-2">
-              <option value="">اختر اليوم</option>
-              <option value="Sunday" {{ request('day') == 'Sunday' ? 'selected' : '' }}>الأحد</option>
-              <option value="Monday" {{ request('day') == 'Monday' ? 'selected' : '' }}>الإثنين</option>
-              <option value="Tuesday" {{ request('day') == 'Tuesday' ? 'selected' : '' }}>الثلاثاء</option>
-              <option value="Wednesday" {{ request('day') == 'Wednesday' ? 'selected' : '' }}>الأربعاء</option>
-              <option value="Thursday" {{ request('day') == 'Thursday' ? 'selected' : '' }}>الخميس</option>
-              <option value="Friday" {{ request('day') == 'Friday' ? 'selected' : '' }}>الجمعة</option>
-              <option value="Saturday" {{ request('day') == 'Saturday' ? 'selected' : '' }}>السبت</option>
-          </select>
-          <input type="number" name="rate_min" placeholder="الراتب الأدنى" class="form-control mr-2" step="0.01" value="{{ request('rate_min') }}">
-          <input type="number" name="rate_max" placeholder="الراتب الأعلى" class="form-control mr-2" step="0.01" value="{{ request('rate_max') }}">
-          <select name="subject_id" class="form-control mr-2">
-              <option value="">اختر المادة الدراسية</option>
-              @foreach(\App\Models\Subject::all() as $subject)
-                  <option value="{{ $subject->id }}" {{ request('subject_id') == $subject->id ? 'selected' : '' }}>{{ $subject->name }}</option>
-              @endforeach
-          </select>
-          <button type="submit" class="btn btn-primary">بحث</button>
-      </form>
-      
       {{-- جدول العرض الخاص بـ Backpack --}}
       @include('crud::inc.datatables_logic')
     </div>
@@ -40,7 +15,6 @@
     trans('backpack::crud.list') => false,
   ];
 
-  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
   $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 @endphp
 
@@ -52,19 +26,14 @@
 @endsection
 
 @section('content')
-  {{-- Default box --}}
   <div class="row" bp-section="crud-operation-list">
-
-    {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 
         <div class="row mb-2 align-items-center">
           <div class="col-sm-9">
             @if ( $crud->buttons()->where('stack', 'top')->count() ||  $crud->exportButtons())
               <div class="d-print-none {{ $crud->hasAccess('create')?'with-border':'' }}">
-
                 @include('crud::inc.button_stack', ['stack' => 'top'])
-
               </div>
             @endif
           </div>
@@ -82,11 +51,6 @@
           @endif
         </div>
 
-        {{-- Backpack List Filters --}}
-        @if ($crud->filtersEnabled())
-          @include('crud::inc.filters_navbar')
-        @endif
-
         <div class="{{ backpack_theme_config('classes.tableWrapper') }}">
             <table
               id="crudTable"
@@ -100,7 +64,6 @@
               cellspacing="0">
             <thead>
               <tr>
-                {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
                   @php
                   $exportOnlyColumn = $column['exportOnlyColumn'] ?? false;
@@ -120,7 +83,6 @@
                     data-visible-in-export="{{ $exportOnlyColumn ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
                     data-force-export="{{ var_export($forceExport) }}"
                   >
-                    {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))
                       {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
                     @endif
@@ -141,10 +103,8 @@
             </tbody>
             <tfoot>
               <tr>
-                {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
                   <th>
-                    {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))
                       {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
                     @endif
@@ -168,40 +128,33 @@
         @endif
 
     </div>
-
   </div>
 
 @endsection
 
 @section('after_styles')
-  {{-- DATA TABLES --}}
   @basset('https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css')
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
   @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
 
   <style>
-      /* تغيير اتجاه القائمة إلى اليمين */
       .header-operation {
-          direction: rtl; /* تعيين الاتجاه إلى اليمين */
+          direction: rtl;
       }
       
       .table {
-          direction: rtl; /* تعيين اتجاه الجدول إلى اليمين */
+          direction: rtl;
       }
 
-      /* محاذاة النص إلى اليمين */
       .text-capitalize, #datatable_info_stack {
           text-align: right;
       }
   </style>
 
-  {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')
 @endsection
 
 @section('after_scripts')
   @include('crud::inc.datatables_logic')
-
-  {{-- CRUD LIST CONTENT - crud_list_scripts stack --}}
   @stack('crud_list_scripts')
 @endsection

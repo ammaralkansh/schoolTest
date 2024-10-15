@@ -10,7 +10,7 @@ class Teacher extends Model
 {
     use CrudTrait;
     use HasFactory;
-    protected $fillable = ['name', 'email','specialization','day','from','to','rate','notes','subject_id','image'];
+    protected $fillable = ['name', 'email','days_available','specialization','rate','notes','subject_id','image'];
     public function subject()
 {
     return $this->belongsTo(Subject::class);
@@ -25,6 +25,9 @@ public function setImageAttribute($value)
 }
 
 
+protected $casts = [
+    'days_available' => 'array',
+];
 
 
 
