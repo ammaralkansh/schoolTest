@@ -21,8 +21,6 @@ class TeacherCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
      */
     public function setup()
     {
@@ -39,21 +37,60 @@ class TeacherCrudController extends CrudController
         CRUD::setFromDb(); // لجلب الأعمدة من قاعدة البيانات
 
         // تخصيص بعض الأعمدة بعد `setFromDb` إذا لزم الأمر
-
-        // عرض صورة المعلم
-        CRUD::modifyColumn('image', [
+        CRUD::addColumn([
+            'name' => 'image',
+            'label' => 'صورة المعلم',
             'type' => 'image',
-            'disk' => 'public',
             'prefix' => 'uploads/images/teachers/',
             'height' => '50px',
             'width' => '50px',
-            'label' => 'صورة المعلم'
         ]);
 
-        // عرض الأيام المتاحة
-        CRUD::modifyColumn('days_available', [
-            'type' => 'array',
-            'label' => 'الأيام المتاحة'
+        CRUD::addColumn([
+            'name' => 'specialization',
+            'label' => 'التخصص',
+            'type' => 'text',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'rate',
+            'label' => 'راتب المدرس',
+            'type' => 'number',
+            'prefix' => '$',
+            'decimals' => 2,
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'subject_id',
+            'label' => 'المادة الدراسية',
+            'type' => 'select',
+            'entity' => 'subject',
+            'model' => 'App\Models\Subject',
+            'attribute' => 'name',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'notes',
+            'label' => 'ملاحظات',
+            'type' => 'text',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'days_available',
+            'label' => 'الأيام المتاحة',
+            'type' => 'array', // عرض الأيام المتاحة كقائمة
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'from',
+            'label' => 'الوقت المتاح من',
+            'type' => 'time',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'to',
+            'label' => 'الوقت المتاح إلى',
+            'type' => 'time',
         ]);
     }
 
@@ -82,23 +119,20 @@ class TeacherCrudController extends CrudController
             'allows_multiple' => true, // يتيح اختيار عدة أيام
         ]);
 
-        // حقل اسم المعلم
         $this->crud->addField([
             'name' => 'name',
             'label' => 'اسم المعلم',
             'type' => 'text',
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل البريد الإلكتروني
         $this->crud->addField([
             'name' => 'email',
             'label' => 'البريد الإلكتروني',
             'type' => 'email',
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل صورة المعلم
         $this->crud->addField([
             'name' => 'image',
             'label' => 'صورة المعلم',
@@ -106,27 +140,24 @@ class TeacherCrudController extends CrudController
             'upload' => true,
             'disk' => 'public',
             'prefix' => 'uploads/images/teachers/',
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل التخصص
         $this->crud->addField([
             'name' => 'specialization',
             'label' => 'التخصص',
             'type' => 'text',
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل راتب المدرس
         $this->crud->addField([
             'name' => 'rate',
             'label' => 'راتب المدرس',
             'type' => 'number',
             'attributes' => ["step" => "0.01"],
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل المادة الدراسية
         $this->crud->addField([
             'name' => 'subject_id',
             'label' => 'المادة الدراسية',
@@ -137,29 +168,28 @@ class TeacherCrudController extends CrudController
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل الملاحظات
         $this->crud->addField([
             'name' => 'notes',
             'label' => 'ملاحظات',
             'type' => 'textarea',
-            'wrapper' => ['class' => 'form-group col-md-12'],
+            'wrapper' => ['class' => 'form-group col-md-12'], // عرض كامل
         ]);
 
-        // حقل الوقت المتاح من
         $this->crud->addField([
             'name' => 'from',
-            'label' => 'الوقت المتاح من ',
+            'label' => 'الوقت المتاح من',
             'type' => 'time',
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
 
-        // حقل الوقت المتاح إلى
         $this->crud->addField([
             'name' => 'to',
-            'label' => 'الوقت المتاح الى',
+            'label' => 'الوقت المتاح إلى',
             'type' => 'time',
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
     }
 
