@@ -46,12 +46,12 @@
     <li><a href="{{ backpack_url('user') }}">المستخدمين</a></li>
     <li><a href="{{ backpack_url('teacher') }}">المعلمين</a></li>
     <li><a href="{{ backpack_url('students') }}">الطلاب</a></li>
+    <li><a href="{{ backpack_url('organizer') }}">منظمين</a></li>
     <li><a href="{{ backpack_url('subject') }}">المواد الدراسية</a></li>
     <li><a href="{{ backpack_url('classroom') }}">الصفوف الدراسية</a></li>
     <li><a href="{{ backpack_url('course') }}">الدورات</a></li>
     <li><a href="{{ backpack_url('library') }}">ادارة المكتبات</a></li>
     <li><a href="{{ backpack_url('book') }}">الكتب</a></li>
+
 </ul>
 
-
-<x-backpack::menu-item title="Organizers" icon="la la-question" :link="backpack_url('organizer')" />

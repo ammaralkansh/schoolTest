@@ -54,17 +54,27 @@ class LibraryCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(LibraryRequest::class);
-
-        CRUD::field('name')->label('اسم المكتبة');
-        CRUD::field('location')->label('موقع المكتبة');
-        CRUD::field('status')->label('حالة المكتبة')->type('select_from_array')->options([
-            'open' => 'مفتوحة',
-            'closed' => 'مغلقة',
-        ]);
-        
-        // إضافة قائمة منسدلة لاختيار الكتب المتاحة في المكتبة
-     //   CRUD::field('books')->label('الكتب المتاحة')->type('select2_multiple')->entity('books')->model(\App\Models\Book::class)->attribute('title');
+    
+        CRUD::field('name')
+            ->label('اسم المكتبة')
+            ->wrapper(['class' => 'form-group col-md-6']); // نصف عرض
+    
+        CRUD::field('location')
+            ->label('موقع المكتبة')
+            ->wrapper(['class' => 'form-group col-md-6']); // نصف عرض
+    
+        CRUD::field('status')
+            ->label('حالة المكتبة')
+            ->type('select_from_array')
+            ->options([
+                'open' => 'مفتوحة',
+                'closed' => 'مغلقة',
+            ])
+            ->wrapper(['class' => 'form-group col-md-6']); // نصف عرض
+    
+      
     }
+    
 
     /**
      * Define what happens when the Update operation is loaded.

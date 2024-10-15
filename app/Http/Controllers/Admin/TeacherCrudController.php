@@ -61,63 +61,82 @@ class TeacherCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(TeacherRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        CRUD::setFromDb(); 
+    
+        $this->crud->addField([
+            'name' => 'name',
+            'label' => 'اسم المعلم',
+            'type' => 'text',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+        ]);
+    
+        $this->crud->addField([
+            'name' => 'email',
+            'label' => 'البريد الإلكتروني',
+            'type' => 'email',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+        ]);
+    
         $this->crud->addField([
             'name' => 'image',
             'label' => 'صورة المعلم',
             'type' => 'upload',
             'upload' => true,
-            'disk' => 'public', // تأكد من استخدام قرص 'public' لحفظ الملفات
-            'prefix' => 'uploads/images/teachers/', // مسار تخزين الصور
+            'disk' => 'public',
+            'prefix' => 'uploads/images/teachers/',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
         ]);
-        
-        
+    
         $this->crud->addField([
             'name' => 'specialization',
             'label' => 'التخصص',
             'type' => 'text',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
         ]);
-        
+    
         $this->crud->addField([
             'name' => 'available_from',
             'label' => 'الوقت المتاح من',
             'type' => 'time',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
         ]);
-        
+    
         $this->crud->addField([
             'name' => 'available_to',
             'label' => 'الوقت المتاح إلى',
             'type' => 'time',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
         ]);
-        
+    
         $this->crud->addField([
             'name' => 'rate',
             'label' => 'راتب المدرس',
             'type' => 'number',
             'attributes' => ["step" => "0.01"],
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
         ]);
+    
         $this->crud->addField([
             'name' => 'subject_id',
             'label' => 'المادة الدراسية',
             'type' => 'select',
             'entity' => 'subject',
-            'model' => 'App\Models\Subject', // مسار النموذج المرتبط بالمادة
-            'attribute' => 'name', // عرض اسم المادة في القائمة المنسدلة
+            'model' => 'App\Models\Subject',
+            'attribute' => 'name',
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
-            }), // ترتيب الخيارات تصاعديًا حسب الاسم
+            }),
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
         ]);
-        
+    
+        // صف الحقول: ملاحظات
         $this->crud->addField([
             'name' => 'notes',
             'label' => 'ملاحظات',
             'type' => 'textarea',
+            'wrapper' => ['class' => 'form-group col-md-12'], // عرض كامل الصف
         ]);
-        
-        
     }
-
-
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

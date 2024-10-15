@@ -65,13 +65,15 @@ class StudentsCrudController extends CrudController
     {
         CRUD::setValidation(StudentsRequest::class);
 
-        CRUD::field('name');
-        CRUD::field('age');
-        CRUD::field('country');
-        CRUD::field('phone');
-        CRUD::field('email'); // Ensure email field is present
-        CRUD::field('date_of_birth');
-
+        CRUD::field('name')->wrapper(['class' => 'form-group col-md-6']);
+        CRUD::field('age')->wrapper(['class' => 'form-group col-md-6']);
+        
+        CRUD::field('country')->wrapper(['class' => 'form-group col-md-6']);
+        CRUD::field('phone')->wrapper(['class' => 'form-group col-md-6']);
+        
+        CRUD::field('email')->wrapper(['class' => 'form-group col-md-6']);
+        CRUD::field('date_of_birth')->wrapper(['class' => 'form-group col-md-6']);
+        
         CRUD::addField([
             'name' => 'status',
             'type' => 'select_from_array',
@@ -82,8 +84,9 @@ class StudentsCrudController extends CrudController
             ],
             'label' => 'الحالة',
             'allows_null' => false,
+            'wrapper' => ['class' => 'form-group col-md-6'], // جعلها في سطر مع الحقل التالي
         ]);
-
+        
         CRUD::addField([
             'name' => 'classroom_id',
             'label' => "Classroom",
@@ -94,7 +97,9 @@ class StudentsCrudController extends CrudController
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
+            'wrapper' => ['class' => 'form-group col-md-6'], // جعلها في سطر مع الحقل السابق
         ]);
+        
     }
 
     protected function setupUpdateOperation()

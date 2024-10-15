@@ -99,17 +99,29 @@ class SubjectCrudController extends CrudController
     {
         CRUD::setValidation(SubjectRequest::class);
         CRUD::setFromDb(); // استخدام الحقول من قاعدة البيانات
-
-        // يمكنك تخصيص الحقول هنا
+    
+        // حقلين في صف واحد
+        CRUD::addField([
+            'name' => 'course_price',
+            'label' => 'Course Price',
+            'type' => 'number',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+        ]);
+        
+        CRUD::addField([
+            'name' => 'course_hours',
+            'label' => 'Course Hours',
+            'type' => 'number',
+            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+        ]);
+        
+        // يمكنك تخصيص حقول إضافية هنا إذا لزم الأمر
         CRUD::addField([
             'name' => 'name',
             'label' => 'اسم المادة الدراسية',
             'type' => 'text',
         ]);
-        CRUD::field('course_price')->label('Course Price')->type('number'); // سعر الكورس
-        CRUD::field('course_hours')->label('Course Hours')->type('number'); // عدد الساعات
     }
-
     /**
      * Define what happens when the Update operation is loaded.
      * 

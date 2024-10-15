@@ -39,7 +39,7 @@ class Course extends Model
 
     public function organizer()
     {
-        return $this->belongsTo(Staff::class, 'organizer_id');
+        return $this->belongsTo(Organizer::class);
     }
     
 

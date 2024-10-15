@@ -96,18 +96,42 @@ class BookCrudController extends CrudController
      * @return void
      */
     protected function setupCreateOperation()
-{
-    CRUD::setValidation(BookRequest::class);
-
-    CRUD::field('title')->label('اسم الكتاب');
-    CRUD::field('price')->label('سعر الكتاب')->type('number')->attributes(['step' => '0.01']);
-    CRUD::field('pages')->label('عدد الصفحات')->type('number');
-    CRUD::field('status')->label('حالة الكتاب')->type('select_from_array')->options([
-        'available' => 'متاح',
-        'borrowed' => 'مستعار',
-    ]);
-    CRUD::field('library_id')->label('المكتبة')->type('select')->entity('library')->model('App\Models\Library')->attribute('name');
-}
+    {
+        CRUD::setValidation(BookRequest::class);
+    
+        CRUD::field('title')
+            ->label('اسم الكتاب')
+            ->wrapper(['class' => 'form-group col-md-6']); // جعل هذا الحقل في نصف العرض
+    
+        CRUD::field('price')
+            ->label('سعر الكتاب')
+            ->type('number')
+            ->attributes(['step' => '0.01'])
+            ->wrapper(['class' => 'form-group col-md-6']); // جعل هذا الحقل في نصف العرض
+    
+        CRUD::field('pages')
+            ->label('عدد الصفحات')
+            ->type('number')
+            ->wrapper(['class' => 'form-group col-md-6']); // جعل هذا الحقل في نصف العرض
+    
+        CRUD::field('status')
+            ->label('حالة الكتاب')
+            ->type('select_from_array')
+            ->options([
+                'available' => 'متاح',
+                'borrowed' => 'مستعار',
+            ])
+            ->wrapper(['class' => 'form-group col-md-6']); // جعل هذا الحقل في نصف العرض
+    
+        CRUD::field('library_id')
+            ->label('المكتبة')
+            ->type('select')
+            ->entity('library')
+            ->model('App\Models\Library')
+            ->attribute('name')
+            ->wrapper(['class' => 'form-group col-md-6']); // جعل هذا الحقل في نصف العرض
+    }
+    
 
     /**
      * Define what happens when the Update operation is loaded.

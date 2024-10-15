@@ -23,26 +23,26 @@ class CourseRequest extends FormRequest
      * @return array
      */
     public function rules()
-{
-    return [
-        'name' => 'required|min:5|max:255',
-        'subject_id' => 'required|exists:subjects,id',
-        'teacher_id' => 'required|exists:teachers,id',
-        'organizer_id' => 'required|exists:staff,id',
-        'level' => 'required',
-        'stage' => 'required',
-        'duration' => 'required|integer|min:1',
-        'min_students' => 'required|integer|min:1',
-        'max_students' => 'required|integer|min:1|gte:min_students',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after_or_equal:start_date',
-        'course_type' => 'required',
-        'number_of_lessons' => 'required|integer|min:1',
-        'status' => 'required',
-        'whatsapp_group' => 'boolean',
-    ];
-}
-
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'subject_id' => 'required|exists:subjects,id',
+            'teacher_id' => 'required|exists:teachers,id',
+            'organizer_id' => 'required|exists:organizers,id', // تأكد من وجود هذا السطر
+            'level' => 'required|string',
+            'stage' => 'required|string',
+            'duration' => 'required|integer',
+            'min_students' => 'required|integer',
+            'max_students' => 'required|integer',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'course_type' => 'required|string',
+            'number_of_lessons' => 'required|integer',
+            'status' => 'required|string',
+            'whatsapp_group' => 'boolean',
+        ];
+    }
+    
 
     /**
      * Get the validation attributes that apply to the request.

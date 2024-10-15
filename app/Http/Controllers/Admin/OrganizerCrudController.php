@@ -28,7 +28,7 @@ class OrganizerCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Organizer::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/organizer');
-        CRUD::setEntityNameStrings('organizer', 'organizers');
+        CRUD::setEntityNameStrings('منظم', 'المنظمين');
     }
 
     /**
@@ -56,12 +56,22 @@ class OrganizerCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(OrganizerRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        
+        // Load fields from the database
+        CRUD::setFromDb();
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        // Modify the appearance of fields
+        CRUD::modifyField('name', [
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
+        ]);
+    
+        CRUD::modifyField('email', [
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
+        ]);
+    
+        CRUD::modifyField('phone', [
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
+        ]);
     }
 
     /**
