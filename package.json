@@ -16,6 +16,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
+        "bootstrap-rtl": "^3.3.4",
         "chart.js": "^4.4.4"
     }
 }

@@ -39,7 +39,7 @@ return [
 
     // Direction, according to language
     // (left-to-right vs right-to-left)
-    'html_direction' => 'ltr',
+    'html_direction' => 'rtl',
 
     // ----
     // HEAD
@@ -107,6 +107,7 @@ return [
     // Please note that support for Vite was added in Laravel 9.19. Earlier versions are not able to use this feature.
     'vite_styles' => [ // resource file_path
         // 'resources/css/app.css',
+
     ],
 
     // --------------
@@ -128,7 +129,9 @@ return [
 
     // JS files that are loaded in all pages, using Laravel's @vite() helper
     'vite_scripts' => [ // resource file_path
-        // 'resources/js/app.js',
+ 
+
+         
     ],
 
     'classes' => [

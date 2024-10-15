@@ -19,5 +19,11 @@
     }
 @endphp
 
-@section('content')
-@endsection
+
+
+
+
+
+
+
+

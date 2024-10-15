@@ -37,3 +37,15 @@
     <li><a href="{{ backpack_url('classroom') }}">الصفوف الدراسية</a></li>
     <li><a href="{{ backpack_url('analytics') }}">Analytics</a></li>
 </ul>
+
+
+
+
+
+
+
+
+
+
+
+
