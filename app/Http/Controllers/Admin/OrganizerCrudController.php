@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\OrganizerRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class UserCrudController
+ * Class OrganizerCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class UserCrudController extends CrudController
+class OrganizerCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\User::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        CRUD::setEntityNameStrings('مستخدم', 'المستخدمين');
+        CRUD::setModel(\App\Models\Organizer::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/organizer');
+        CRUD::setEntityNameStrings('منظم', 'المنظمين');
     }
 
     /**
@@ -41,6 +41,10 @@ class UserCrudController extends CrudController
     {
         CRUD::setFromDb(); // set columns from db columns.
 
+        /**
+         * Columns can be defined using the fluent syntax:
+         * - CRUD::column('price')->type('number');
+         */
     }
 
     /**
@@ -51,27 +55,23 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
+        CRUD::setValidation(OrganizerRequest::class);
         
-        $this->crud->addField([
-            'name' => 'name',
-            'label' => 'اسم المستخدم',
-            'type' => 'text',
-        ]);
+        // Load fields from the database
+        CRUD::setFromDb();
 
-        $this->crud->addField([
-            'name' => 'email',
-            'label' => 'البريد الإلكتروني',
-            'type' => 'email',
+        // Modify the appearance of fields
+        CRUD::modifyField('name', [
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
-
-        $this->crud->addField([
-            'name' => 'password',
-            'label' => 'كلمة المرور',
-            'type' => 'password',
+    
+        CRUD::modifyField('email', [
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
         ]);
-
-      
+    
+        CRUD::modifyField('phone', [
+            'wrapper' => ['class' => 'form-group col-md-6'], // نصف عرض
+        ]);
     }
 
     /**
@@ -82,6 +82,6 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation(); // استخدم إعدادات إنشاء المستخدم
+        $this->setupCreateOperation();
     }
 }
