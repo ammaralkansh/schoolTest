@@ -13,7 +13,6 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class TeacherCrudController extends CrudController
 {
-    
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -30,325 +29,46 @@ class TeacherCrudController extends CrudController
         CRUD::setModel(\App\Models\Teacher::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/teacher');
         CRUD::setEntityNameStrings('معلم', 'المعلمين');
-        
     }
+
+    /**
+     * Setup the list operation to display the fields.
+     */
     protected function setupListOperation()
     {
-        CRUD::setValidation(TeacherRequest::class);
         CRUD::setFromDb(); // لجلب الأعمدة من قاعدة البيانات
-    
-        // إعداد الأعمدة (مثال على بعض الأعمدة فقط)
-        CRUD::addColumn([
-            'name' => 'image',
-            'label' => 'صورة المعلم',
+
+        // تخصيص بعض الأعمدة بعد `setFromDb` إذا لزم الأمر
+
+        // عرض صورة المعلم
+        CRUD::modifyColumn('image', [
             'type' => 'image',
+            'disk' => 'public',
             'prefix' => 'uploads/images/teachers/',
             'height' => '50px',
             'width' => '50px',
+            'label' => 'صورة المعلم'
         ]);
-    
-        CRUD::addColumn([
-            'name' => 'day',
-            'label' => 'اليوم',
-            'type' => 'text',
+
+        // عرض الأيام المتاحة
+        CRUD::modifyColumn('days_available', [
+            'type' => 'array',
+            'label' => 'الأيام المتاحة'
         ]);
-    
-        CRUD::addColumn([
-            'name' => 'specialization',
-            'label' => 'التخصص',
-            'type' => 'text',
-        ]);
-    
-        CRUD::addColumn([
-            'name' => 'rate',
-            'label' => 'راتب المدرس',
-            'type' => 'number',
-            'prefix' => '$',
-            'decimals' => 2,
-        ]);
-    
-        CRUD::addColumn([
-            'name' => 'subject_id',
-            'label' => 'المادة الدراسية',
-            'type' => 'select',
-            'entity' => 'subject',
-            'model' => 'App\Models\Subject',
-            'attribute' => 'name',
-        ]);
-    
-        // تطبيق شروط البحث عند وجود مدخلات
-        if (request()->has('specialization')) {
-            CRUD::addClause('where', 'specialization', 'LIKE', '%' . request('specialization') . '%');
-        }
-    
-        if (request()->has('day')) {
-            CRUD::addClause('where', 'day', request('day'));
-        }
-    
-        if (request()->has('rate_min') || request()->has('rate_max')) {
-            $rateMin = request('rate_min', 0);
-            $rateMax = request('rate_max', PHP_INT_MAX);
-            CRUD::addClause('whereBetween', 'rate', [(float)$rateMin, (float)$rateMax]);
-        }
-    
-        if (request()->has('subject_id')) {
-            CRUD::addClause('where', 'subject_id', request('subject_id'));
-        }
     }
-    
 
-
-
-
-
-
-
-
-
-    
-
-    // protected function setupListOperation()
-    // {
-    //     CRUD::setValidation(TeacherRequest::class); 
-    //     // عمود عرض صورة المعلم
-    //     CRUD::addColumn([
-    //         'name' => 'image',
-    //         'label' => 'صورة المعلم',
-    //         'type' => 'image',
-    //         'prefix' => 'uploads/images/teachers/', // مسار الصور
-    //         'height' => '50px', // حجم الصورة
-    //         'width' => '50px',
-    //     ]);
-    
-    //     // عمود عرض اليوم
-    //     CRUD::addColumn([
-    //         'name' => 'day',
-    //         'label' => 'اليوم',
-    //         'type' => 'text',
-    //         'options' => [
-    //             'Sunday' => 'الأحد',
-    //             'Monday' => 'الإثنين',
-    //             'Tuesday' => 'الثلاثاء',
-    //             'Wednesday' => 'الأربعاء',
-    //             'Thursday' => 'الخميس',
-    //             'Friday' => 'الجمعة',
-    //             'Saturday' => 'السبت',
-    //         ],
-    //     ]);
-    
-    //     // عمود عرض التخصص
-    //     CRUD::addColumn([
-    //         'name' => 'specialization',
-    //         'label' => 'التخصص',
-    //         'type' => 'text',
-    //     ]);
-    
-    //     // عمود عرض راتب المدرس
-    //     CRUD::addColumn([
-    //         'name' => 'rate',
-    //         'label' => 'راتب المدرس',
-    //         'type' => 'number',
-    //         'prefix' => '$', // إضافة رمز العملة
-    //         'decimals' => 2, // عرض عدد محدد من الكسور
-    //     ]);
-    
-    //     // عمود عرض المادة الدراسية
-    //     CRUD::addColumn([
-    //         'name' => 'subject_id',
-    //         'label' => 'المادة الدراسية',
-    //         'type' => 'select',
-    //         'entity' => 'subject',
-    //         'model' => 'App\Models\Subject', // مسار النموذج المرتبط بالمادة
-    //         'attribute' => 'name', // عرض اسم المادة في القائمة
-    //     ]);
-    
-    //     // عمود عرض الملاحظات
-    //     CRUD::addColumn([
-    //         'name' => 'notes',
-    //         'label' => 'ملاحظات',
-    //         'type' => 'text',
-    //     ]);
-    
-    //     // عمود عرض الوقت المتاح من
-    //     CRUD::addColumn([
-    //         'name' => 'from',
-    //         'label' => 'الوقت المتاح من',
-    //         'type' => 'time',
-    //     ]);
-    
-    //     // عمود عرض الوقت المتاح إلى
-    //     CRUD::addColumn([
-    //         'name' => 'to',
-    //         'label' => 'الوقت المتاح إلى',
-    //         'type' => 'time',
-    //     ]);
-    
-    //     // إضافة فلاتر البحث
-    //     if (request()->has('specialization')) {
-    //         CRUD::addClause('where', 'specialization', 'LIKE', '%' . request('specialization') . '%');
-    //     }
-    
-    //     if (request()->has('day')) {
-    //         CRUD::addClause('where', 'day', request('day'));
-    //     }
-    
-    //     if (request()->has('rate_min') || request()->has('rate_max')) {
-    //         $rateMin = request('rate_min', 0);
-    //         $rateMax = request('rate_max', PHP_INT_MAX);
-    //         CRUD::addClause('whereBetween', 'rate', [(float)$rateMin, (float)$rateMax]);
-    //     }
-    
-    //     if (request()->has('subject_id')) {
-    //         CRUD::addClause('where', 'subject_id', request('subject_id'));
-    //     }
-    
-    //     // تضمين نموذج البحث كـ custom_html
-    //     CRUD::addColumn([
-    //         'name' => 'custom_filters',
-    //         'type' => 'custom_html',
-    //         'label' => 'فلاتر البحث',
-    //         'value' => function() {
-    //             return view('vendor.backpack.filters.custom_search')->render();
-    //         }
-    //     ]);
-    // }
-    
-
-//     protected function setupListOperation()
-// {
-//     CRUD::setValidation(TeacherRequest::class);
-
-
-//     // عمود عرض صورة المعلم
-//     CRUD::addColumn([
-//         'name' => 'image',
-//         'label' => 'صورة المعلم',
-//         'type' => 'image',
-//         'prefix' => 'uploads/images/teachers/', // مسار الصور
-//         'height' => '50px', // حجم الصورة
-//         'width' => '50px',
-//     ]);
-
-//     // عمود عرض اليوم
-//     CRUD::addColumn([
-//         'name' => 'day',
-//         'label' => 'اليوم',
-//         'type' => 'text', // يفضل استخدام "text" هنا إذا لم يتم استيرادها كقائمة
-//         'options' => [
-//             'Sunday' => 'الأحد',
-//             'Monday' => 'الإثنين',
-//             'Tuesday' => 'الثلاثاء',
-//             'Wednesday' => 'الأربعاء',
-//             'Thursday' => 'الخميس',
-//             'Friday' => 'الجمعة',
-//             'Saturday' => 'السبت',
-//         ],
-//     ]);
-
-//     // عمود عرض التخصص
-//     CRUD::addColumn([
-//         'name' => 'specialization',
-//         'label' => 'التخصص',
-//         'type' => 'text',
-//     ]);
-
-//     // عمود عرض راتب المدرس
-//     CRUD::addColumn([
-//         'name' => 'rate',
-//         'label' => 'راتب المدرس',
-//         'type' => 'number',
-//         'prefix' => '$', // إضافة رمز العملة
-//         'decimals' => 2, // عرض عدد محدد من الكسور
-//     ]);
-
-//     // عمود عرض المادة الدراسية
-//     CRUD::addColumn([
-//         'name' => 'subject_id',
-//         'label' => 'المادة الدراسية',
-//         'type' => 'select',
-//         'entity' => 'subject',
-//         'model' => 'App\Models\Subject', // مسار النموذج المرتبط بالمادة
-//         'attribute' => 'name', // عرض اسم المادة في القائمة
-//     ]);
-
-//     // عمود عرض الملاحظات
-//     CRUD::addColumn([
-//         'name' => 'notes',
-//         'label' => 'ملاحظات',
-//         'type' => 'text',
-//     ]);
-
-//     // عمود عرض الوقت المتاح من
-//     CRUD::addColumn([
-//         'name' => 'from',
-//         'label' => 'الوقت المتاح من',
-//         'type' => 'time',
-//     ]);
-
-//     // عمود عرض الوقت المتاح إلى
-//     CRUD::addColumn([
-//         'name' => 'to',
-//         'label' => 'الوقت المتاح إلى',
-//         'type' => 'time',
-//     ]);
-
-    
-    
-// }
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Setup the create operation to define fields.
+     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(TeacherRequest::class);
-<<<<<<< HEAD
-        CRUD::setFromDb(); // set fields from db columns.
+        CRUD::setFromDb(); // لجلب الأعمدة من قاعدة البيانات
 
-
-
-=======
-        CRUD::setFromDb(); 
-    
+        // حقل اختيار الأيام المتاحة
         $this->crud->addField([
-            'name' => 'name',
-            'label' => 'اسم المعلم',
-            'type' => 'text',
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
-        ]);
-    
-        $this->crud->addField([
-            'name' => 'email',
-            'label' => 'البريد الإلكتروني',
-            'type' => 'email',
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
-        ]);
-    
->>>>>>> 0519a0140ac2b8e4d7b8537d1e1cdf41802b0a67
-        $this->crud->addField([
-            'name' => 'image',
-            'label' => 'صورة المعلم',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'public',
-            'prefix' => 'uploads/images/teachers/',
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
-        ]);
-<<<<<<< HEAD
-        $this->crud->addField([
-            'name' => 'day',
-            'label' => 'اليوم',
+            'name' => 'days_available',
+            'label' => 'الأيام المتاحة',
             'type' => 'select_from_array',
             'options' => [
                 'Sunday' => 'الأحد',
@@ -359,51 +79,54 @@ class TeacherCrudController extends CrudController
                 'Friday' => 'الجمعة',
                 'Saturday' => 'السبت',
             ],
-            'allows_null' => false, // لجعل الاختيار إلزاميًا
+            'allows_multiple' => true, // يتيح اختيار عدة أيام
         ]);
-        
-        
-        
-=======
-    
->>>>>>> 0519a0140ac2b8e4d7b8537d1e1cdf41802b0a67
+
+        // حقل اسم المعلم
+        $this->crud->addField([
+            'name' => 'name',
+            'label' => 'اسم المعلم',
+            'type' => 'text',
+            'wrapper' => ['class' => 'form-group col-md-6'],
+        ]);
+
+        // حقل البريد الإلكتروني
+        $this->crud->addField([
+            'name' => 'email',
+            'label' => 'البريد الإلكتروني',
+            'type' => 'email',
+            'wrapper' => ['class' => 'form-group col-md-6'],
+        ]);
+
+        // حقل صورة المعلم
+        $this->crud->addField([
+            'name' => 'image',
+            'label' => 'صورة المعلم',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+            'prefix' => 'uploads/images/teachers/',
+            'wrapper' => ['class' => 'form-group col-md-6'],
+        ]);
+
+        // حقل التخصص
         $this->crud->addField([
             'name' => 'specialization',
             'label' => 'التخصص',
             'type' => 'text',
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+            'wrapper' => ['class' => 'form-group col-md-6'],
         ]);
-<<<<<<< HEAD
-        
 
-        
-
-        
-=======
-    
-        $this->crud->addField([
-            'name' => 'available_from',
-            'label' => 'الوقت المتاح من',
-            'type' => 'time',
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
-        ]);
-    
-        $this->crud->addField([
-            'name' => 'available_to',
-            'label' => 'الوقت المتاح إلى',
-            'type' => 'time',
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
-        ]);
-    
->>>>>>> 0519a0140ac2b8e4d7b8537d1e1cdf41802b0a67
+        // حقل راتب المدرس
         $this->crud->addField([
             'name' => 'rate',
             'label' => 'راتب المدرس',
             'type' => 'number',
             'attributes' => ["step" => "0.01"],
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+            'wrapper' => ['class' => 'form-group col-md-6'],
         ]);
-    
+
+        // حقل المادة الدراسية
         $this->crud->addField([
             'name' => 'subject_id',
             'label' => 'المادة الدراسية',
@@ -414,37 +137,35 @@ class TeacherCrudController extends CrudController
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
-            'wrapper' => ['class' => 'form-group col-md-6'], // تحكم في عرض الحقل
+            'wrapper' => ['class' => 'form-group col-md-6'],
         ]);
-    
-        // صف الحقول: ملاحظات
+
+        // حقل الملاحظات
         $this->crud->addField([
             'name' => 'notes',
             'label' => 'ملاحظات',
             'type' => 'textarea',
-            'wrapper' => ['class' => 'form-group col-md-12'], // عرض كامل الصف
+            'wrapper' => ['class' => 'form-group col-md-12'],
         ]);
-<<<<<<< HEAD
 
-        // حقل اختيار الوقت "من"
-$this->crud->addField([
-    'name' => 'from',
-    'label' => 'الوقت المتاح من ',
-    'type' => 'time',
-]);
+        // حقل الوقت المتاح من
+        $this->crud->addField([
+            'name' => 'from',
+            'label' => 'الوقت المتاح من ',
+            'type' => 'time',
+        ]);
 
-// حقل اختيار الوقت "إلى"
-$this->crud->addField([
-    'name' => 'to',
-    'label' => 'الوقت المتاح الى',
-    'type' => 'time',
-]);
-
-        
-        
-=======
->>>>>>> 0519a0140ac2b8e4d7b8537d1e1cdf41802b0a67
+        // حقل الوقت المتاح إلى
+        $this->crud->addField([
+            'name' => 'to',
+            'label' => 'الوقت المتاح الى',
+            'type' => 'time',
+        ]);
     }
+
+    /**
+     * Setup the update operation with the same fields as create operation.
+     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
